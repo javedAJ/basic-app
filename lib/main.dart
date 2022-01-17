@@ -36,7 +36,7 @@ class _MyappState extends State<Myapp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Center(child: Text("Quizz App")),
+            title: Center(child: Text("Basic Quiz App")),
           ),
           body: Center(
             child: Column(
