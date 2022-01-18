@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import './question.dart';
+import 'answer.dart';
 
 void main() {
   runApp(Myapp());
@@ -18,8 +19,10 @@ class _MyappState extends State<Myapp> {
   var _questionIndex = 0;
 
   void answerQuestion() {
-    setState(() {
-      _questionIndex = _questionIndex + 1;
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      setState(() {
+        // _questionIndex = _questionIndex + 1;
+      });
     });
 
     print(_questionIndex);
@@ -29,33 +32,37 @@ class _MyappState extends State<Myapp> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favorite color ?',
-      'what\'s your favorite animal'
+      {
+        'questionText': 'What\'s your favorite color ?',
+        'answers': ['Black', 'Red', 'Green', 'White'],
+      },
+      {
+        'questionText': 'what\'s your favorite animal',
+        'answers': ['Dog', 'Cat', 'Mouse', 'Zebra'],
+      },
+      {
+        'questionText': 'who\'s your favorite instructor',
+        'answers': ['Max', 'Max', 'Max', 'Max'],
+      },
     ];
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
           appBar: AppBar(
             title: Center(child: Text("Basic Quiz App")),
           ),
-          body: Center(
+          body: SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Question(questions.elementAt(_questionIndex)),
-                ElevatedButton(
-                    onPressed: answerQuestion, child: Text("data 1")),
-                ElevatedButton(
-                    onPressed: () => print("Answer 2 CHosen"),
-                    child: Text("data 2")),
-                ElevatedButton(
-                    onPressed: () {
-                      print("Answer 3 CHosen");
-                    },
-                    child: Text("data 3")),
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Question(questions[_questionIndex]['questionText'].toString()),
+                ...(questions[_questionIndex]['answers'] as List<String>)
+                    .map((answer) {
+                  return Answer(answerQuestion, answer);
+                }).toList()
               ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 }
